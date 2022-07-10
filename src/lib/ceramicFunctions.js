@@ -50,26 +50,22 @@ async function tryAuthenticate() {
 
 const initOrUpdateContacts = async accounts => {
     const ceramic = await tryAuthenticate();
-    const streamId = 'kjzl6cwe1jw14aio8pd9hdra4rt0qca0b8t3ym3rwl152l4r2frnur2rcu7mcqu';
+    const streamId = 'kjzl6cwe1jw14a42onu2a527supudea9b60x7ws3wuzxmxsja7apbvlwl9urub4';
 
     const exDoc = await TileDocument.load(ceramic, streamId);
 
-    console.log('The first time it sould be {} and the second it should cointain addresses');
-    console.log('existingDoc now its: ', exDoc.content);
+    // console.log('The first time it sould be {} and the second it should cointain addresses');
+    // console.log('existingDoc: ', exDoc.content);
 
     if (exDoc.content.length > 0) {
         console.log('update ');
 
-        await updateAccountsDocument(exDoc, accounts);
+        await updateContactsDocument(exDoc, accounts);
     } else {
-        //to check that your stream was created you can paste its stream id from
-        //console here
-        const streamId = 'kjzl6cwe1jw14aio8pd9hdra4rt0qca0b8t3ym3rwl152l4r2frnur2rcu7mcqu';
-
         const controller = ceramic.did._id.toString();
 
         //this should not be {} the second time
-        const loadedDoc = await loadDocumentByController(controller, ceramic);
+        const loadedDoc = await loadContactsDocumentByController(controller, ceramic);
         const loadingDocWithstreamId = await TileDocument.load(ceramic, streamId);
 
         console.log('loadedDoc:', loadedDoc.content);
@@ -82,11 +78,47 @@ const initOrUpdateContacts = async accounts => {
         //we use this param to loadDocumentByController
         console.log('loadingDocWithstreamId.metadata.family:', loadingDocWithstreamId.metadata.family);
 
-        await createAccountsDocument(accounts);
+        await createContactsDocument(accounts);
     }
 };
 
-async function loadDocumentByController(controller, ceramic) {
+const initOrUpdateProfile = async profileData => {
+    const ceramic = await tryAuthenticate();
+    const streamId = 'kjzl6cwe1jw146vuwcrs6nhrabngjvdk5kweivi604i8mhdgi325ijuytosfbin';
+
+    const exDoc = await TileDocument.load(ceramic, streamId);
+
+    // console.log('The first time it sould be {} and the second it should cointain addresses');
+    // console.log('existingDoc now its: ', exDoc.content);
+
+    console.log('updating profile', profileData);
+
+    await updateProfileDocument(exDoc, profileData);
+    // if (Object.keys(profileData) > 0) {
+    //     console.log('update ');
+
+    // } else {
+    //     const controller = ceramic.did._id.toString();
+
+    //     //this should not be {} the second time
+    //     const loadedDoc = await loadProfileDocumentByController(controller, ceramic);
+    //     const loadingDocWithstreamId = await TileDocument.load(ceramic, streamId);
+
+    //     console.log('loadedDoc:', loadedDoc.content);
+    //     console.log('loadingDocWithstreamId:', loadingDocWithstreamId.content);
+
+    //     //this two should be equals
+    //     console.log('loadingDocWithstreamId.metadata.controllers[0]', loadingDocWithstreamId.metadata.controllers[0]);
+    //     console.log('ceramic.did._id', ceramic.did._id);
+
+    //     //we use this param to loadDocumentByController
+    //     console.log('loadingDocWithstreamId.metadata.family:', loadingDocWithstreamId.metadata.family);
+
+    //     await createProfileDocument(profileData);
+    // }
+};
+
+async function loadContactsDocumentByController(controller, ceramic) {
     const a = await TileDocument.deterministic(ceramic, {
         // A single controller must be provided to reference a deterministic document
         controllers: [controller],
@@ -94,11 +126,23 @@ async function loadDocumentByController(controller, ceramic) {
         family: 'contacts',
         // tags: ['contacts']
     });
-    console.log('current doc ', a);
+    console.log('current contacts ', a);
     return a;
 }
 
-const createAccountsDocument = async accounts => {
+async function loadProfileDocumentByController(controller, ceramic) {
+    const a = await TileDocument.deterministic(ceramic, {
+        // A single controller must be provided to reference a deterministic document
+        controllers: [controller],
+        // A family or tag must be provided in addition to the controller
+        family: 'profile',
+        // tags: ['contacts']
+    });
+    console.log('current profile ', a);
+    return a;
+}
+
+const createContactsDocument = async accounts => {
     const ceramic = await tryAuthenticate();
 
     //Create an empty array for our accounts with our schema
@@ -110,14 +154,31 @@ const createAccountsDocument = async accounts => {
     }));
 
     //Creates a document with our array
-    console.log('Creating blank document in Ceramic...');
+    console.log('Creating blank document for contacts in Ceramic...');
     const doc = await TileDocument.create(ceramic, accountsBlank, {
         family: 'contacts',
     });
-    console.log(`Document created with streamId: ${doc.id.toString()}`);
+    console.log(`Contacts document created with streamId: ${doc.id.toString()}`);
 };
 
-const updateAccountsDocument = async (existingDoc, accounts) => {
+const createProfileDocument = async profileData => {
+    const ceramic = await tryAuthenticate();
+
+    //Create an empty array for our accounts with our schema
+    const profileBlank = {
+        name: '',
+        address: '',
+    };
+
+    //Creates a document with our array
+    console.log('Creating blank document for profile in Ceramic...');
+    const doc = await TileDocument.create(ceramic, profileData, {
+        family: 'profile',
+    });
+    console.log(`Profile document created with streamId: ${doc.id.toString()}`);
+};
+
+const updateContactsDocument = async (existingDoc, accounts) => {
     //creating an array with addresses already saved
     console.log('existingDoc: ', existingDoc.content);
     const existingAddresses = existingDoc.content.map(account => account.address);
@@ -141,10 +202,21 @@ const updateAccountsDocument = async (existingDoc, accounts) => {
             })
         );
 
-        console.log('Updating document with our new addresses in Ceramic');
+        console.log('Updating document with new contact in ceramic');
         await existingDoc.update(docToSave);
-        console.log('Document updated');
+        console.log('Document updated', existingDoc.content);
     }
+};
+
+const updateProfileDocument = async (existingDoc, newProfileData) => {
+    console.log('existingDoc: ', existingDoc.content);
+
+    const docToSave = { ...existingDoc.content, ...newProfileData };
+    console.log('docToSave: ', docToSave);
+
+    console.log('Updating document with our new addresses in Ceramic');
+    await existingDoc.update(docToSave);
+    console.log('Document updated', existingDoc.content);
 };
 
 const compareArrays = (arr1, arr2) => {
@@ -160,4 +232,12 @@ const compareArrays = (arr1, arr2) => {
     return arr2;
 };
 
-export { createAccountsDocument, initOrUpdateContacts, initOrUpdateProfile, tryAuthenticate, updateAccountsDocument };
+export {
+    createContactsDocument,
+    createProfileDocument,
+    initOrUpdateContacts,
+    initOrUpdateProfile,
+    tryAuthenticate,
+    updateContactsDocument,
+    updateProfileDocument,
+};
