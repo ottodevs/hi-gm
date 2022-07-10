@@ -1,0 +1,116 @@
+/*
+
+    header
+    paragraph
+    button
+    pagination
+    wallet-list
+
+ */
+
+.header {
+    /* Connect with Wallet */
+
+    /* position: absolute;
+    width: 335px;
+    height: 42px;
+    left: 20px;
+    top: 108px; */
+
+    /* basic/xxlg/semi-bold */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 140%;
+    /* identical to box height, or 42px */
+
+    /* display: flex;
+    align-items: center; */
+
+    /* Mono/Light-1000 */
+
+    color: #ffffff;
+}
+
+.subheader {
+    /* You can setup your account from over 100 of the most popular wallets. Proving your identity through a wallet helps increase the trust in our decentralised platform. */
+
+    /* position: absolute;
+    width: 335px;
+    height: 80px;
+    left: 20px;
+    top: 162px; */
+
+    /* basic/xsm/regular */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 140%;
+    /* or 20px */
+
+    /* display: flex;
+    align-items: center; */
+
+    /* Mono/Light-700 */
+
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.paginator_number {
+    /* title */
+
+    /* position: absolute; */
+    /* width: 23px;
+    height: 21px;
+    left: calc(50% - 23px / 2 + 0.5px);
+    top: calc(50% - 21px / 2); */
+
+    /* basic/sm/semi-bold */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 140%;
+    flex-grow: 4;
+    padding-left: 50%;
+    /* identical to box height, or 21px */
+
+    /* display: flex;
+    align-items: center;
+    text-align: center; */
+
+    /* Mono/Light-1000 */
+
+    color: #ffffff;
+}
+
+.paginator_action {
+    /* action右 */
+
+    /* width: 32px;
+    height: 20px; */
+
+    /* basic/xsm/semi-bold */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 140%;
+    /* identical to box height, or 20px */
+
+    /* Semantic/Info-500 */
+
+    color: #00a9ff;
+
+    /* Inside auto layout */
+
+    /* flex: none;
+    order: 0;
+    flex-grow: 0; */
+}

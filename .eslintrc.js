@@ -10,7 +10,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 'latest',
         impliedStrict: true,
-        project: ['tsconfig.json'],
+        project: ['tsconfig.json', 'next.config.js'],
         tsconfigRootDir: __dirname,
     },
     extends: [
@@ -23,7 +23,7 @@ module.exports = {
         'plugin:import/typescript',
         'prettier',
     ],
-    plugins: ['@typescript-eslint', 'chai-friendly', 'unused-imports', 'simple-import-sort', 'import'],
+    plugins: ['@typescript-eslint', 'unused-imports', 'simple-import-sort', 'import'],
     rules: {
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',
@@ -35,6 +35,14 @@ module.exports = {
         'simple-import-sort/exports': 'error',
         'simple-import-sort/imports': 'error',
         'unused-imports/no-unused-imports': 'warn',
+        // temp:
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/restrict-template-expressions': 'off',
         // 'node/no-missing-import': [
         //     'error',
         //     { allowModules: ['chai'], resolvePaths: ['test', 'src'], tryExtensions: ['.ts', '.json'] },
