@@ -1,14 +1,10 @@
-import {
-    createContactsDocument,
-    createProfileDocument,
-    initOrUpdateContacts,
-    initOrUpdateProfile,
-} from '../lib/ceramicFunctions';
+import { connectCeramic, initOrUpdateContacts, initOrUpdateProfile } from '../lib/ceramicFunctions';
 
 const CeramicComponent = () => {
     const handleInitialConnection = async () => {
-        await createProfileDocument({ name: 'Satoshi' });
-        await createContactsDocument(['random-anon']);
+        await connectCeramic();
+        // await createProfileDocument({ name: 'Satoshi' });
+        // await createContactsDocument(['random-anon']);
     };
     const handleUpdateProfile = async () => {
         await initOrUpdateProfile({
@@ -44,6 +40,28 @@ const CeramicComponent = () => {
                     asperiores explicabo eum, animi deleniti quod possimus officia fuga consequuntur facere cumque
                     fugiat nesciunt quos labore vero expedita?
                 </p>
+                <div className="pt-6 grid grid-rows-3 gap-4">
+                    <input
+                        type="email"
+                        className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                        value={'hidetaka'}
+                    />
+                    <input
+                        type="text"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    ></input>
+                    <input
+                        type="text"
+                        className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                        placeholder=""
+                    ></input>
+
+                    <select className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0">
+                        Hello
+                    </select>
+
+                    {/* <input type="checkbox" className="form-checkbox rounded text-pink-500" /> */}
+                </div>
                 <div className="pt-6 grid grid-cols-3 gap-4">
                     <button
                         onClick={() => void handleInitialConnection()}

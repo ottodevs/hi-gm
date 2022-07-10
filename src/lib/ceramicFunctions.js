@@ -40,6 +40,31 @@ async function authenticateWithEthereum(ethereumProvider) {
     return ceramic;
 }
 
+export async function connectCeramic() {
+    const ceramic = await tryAuthenticate();
+
+    const id = ceramic.did.id.slice(6);
+    console.log('authenticated with ceramic. ID:', id);
+
+    const document = await TileDocument.load(ceramic, id);
+
+    console.log('document:', document);
+
+    // const controller = id.toString();
+
+    const loadedDoc = await loadProfileDocumentByController(id.toString(), ceramic);
+
+    console.log('content', loadedDoc.content);
+
+    const profileData = { name: 'hide', organization: 'ok' };
+
+    const doc = await TileDocument.create(ceramic, profileData, {
+        family: 'profile',
+    });
+
+    console.log('created profile', doc);
+}
+
 // When using extensions such as MetaMask, an Ethereum provider may be injected as `window.ethereum`
 async function tryAuthenticate() {
     if (window.ethereum == null) {
@@ -135,7 +160,7 @@ async function loadProfileDocumentByController(controller, ceramic) {
         // A single controller must be provided to reference a deterministic document
         controllers: [controller],
         // A family or tag must be provided in addition to the controller
-        family: 'profile',
+        family: '3id',
         // tags: ['contacts']
     });
     console.log('current profile ', a);
